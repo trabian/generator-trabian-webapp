@@ -75,6 +75,7 @@ TrabianWebappGenerator.prototype.app = function () {
   this.template('_index.html', 'public/index.html');
 
   this.directory('client/app', 'client/app');
+  this.directory('test', 'test');
 
 };
 
