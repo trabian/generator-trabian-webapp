@@ -1,7 +1,6 @@
-# generator-trabian-webapp [![Build Status](https://secure.travis-ci.org/trabianmatt/generator-trabian-webapp.png?branch=master)](https://travis-ci.org/trabianmatt/generator-trabian-webapp)
+# generator-trabian-webapp
 
 A generator for [Yeoman](http://yeoman.io).
-
 
 ## Getting Started
 
@@ -26,7 +25,7 @@ Yeoman travels light. He didn't pack any generators when he moved in. You can th
 To install generator-trabian-webapp from npm, run:
 
 ```
-$ npm install -g generator-trabian-webapp
+$ npm install -g git://github.com/trabian/generator-trabian-webapp.git
 ```
 
 Finally, initiate the generator:
