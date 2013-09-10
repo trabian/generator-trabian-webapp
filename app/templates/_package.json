@@ -1,0 +1,33 @@
+{
+  "name": "<%= _.slugify(appname) %>",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "coffeeify": "~0.5.1",
+    "connect-livereload": "~0.2.0",
+    "grunt": "~0.4.1",
+    "grunt-bower-task": "~0.3.2",
+    "grunt-browserify": "git://github.com/trabian/grunt-browserify.git",
+    "grunt-browserify-navigation": "git://github.com/trabian/grunt-browserify-navigation.git#2afec4f9",
+    "grunt-coffeelint": "~0.0.7",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compass": "~0.5.0",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-karma": "~0.6.2",
+    "grunt-open": "~0.2.2",
+    "jade": "~0.35.0",
+    "karma": "~0.10.2",
+    "karma-chai-plugins": "~0.1.3",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-mocha": "~0.1.0",
+    "karma-osx-reporter": "~0.0.3",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma-spec-reporter": "~0.0.4",
+    "matchdep": "~0.1.2",
+    "mocha": "~1.12.1",
+    "simple-jadeify": "~2.0.1"
+  }
+}

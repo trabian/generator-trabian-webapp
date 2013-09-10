@@ -1,0 +1,7 @@
+node_modules
+bower_components
+public/generated
+*.log
+.sass-cache
+Gemfile.lock
+.DS_Store
