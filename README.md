@@ -1,6 +1,6 @@
 # generator-trabian-webapp
 
-This is an application that "does what it says on the tin." Use it to generate an instance of trabian-webapp into folder. Generator-trabian-webapp uses [Yeoman](http://yeoman.io) to generate trabian-webapp, so just cloning this repo doesn't do much.
+This is an application that "does what it says on the tin." Use it to generate an instance of trabian-webapp into the current directory. Generator-trabian-webapp uses [Yeoman](http://yeoman.io) to generate trabian-webapp, so just cloning this repo doesn't do much.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Next, to install generator-trabian-webapp from npm, run:
 $ npm install -g git://github.com/trabian/generator-trabian-webapp.git
 ```
 
-Now, you can generate a copy of trabian-webapp. Let's make a directory to create it in, and then change to that directory:
+Now, you can generate a new application. Because generator-trabian-webapp creates the app in the current directory, let's make a directory to create the application in, and then change to that directory:
 
 ```
 $ mkdir a-new-trabian-webapp
