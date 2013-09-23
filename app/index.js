@@ -29,6 +29,21 @@ var TrabianWebappGenerator = module.exports = function TrabianWebappGenerator(ar
 
 util.inherits(TrabianWebappGenerator, yeoman.generators.Base);
 
+TrabianWebappGenerator.prototype.askForBootstrap = function askForBootstrap() {
+  var cb = this.async();
+
+  this.prompt([{
+    type: 'confirm',
+    name: 'bootstrap',
+    message: 'Would you like to include Twitter Bootstrap?',
+    default: true
+  }], function (props) {
+    this.bootstrap = props.bootstrap;
+
+    cb();
+  }.bind(this));
+};
+
 // TrabianWebappGenerator.prototype.askFor = function askFor() {
 //   var cb = this.async();
 
@@ -59,7 +74,7 @@ util.inherits(TrabianWebappGenerator, yeoman.generators.Base);
 //   }.bind(this));
 // };
 
-TrabianWebappGenerator.prototype.buildTools = function () {
+TrabianWebappGenerator.prototype.shared = function () {
 
   this.copy('_package.json', 'package.json');
 
@@ -68,21 +83,25 @@ TrabianWebappGenerator.prototype.buildTools = function () {
   this.template('_bower.json', 'bower.json');
   this.copy('bowerrc', '.bowerrc');
 
-};
-
-TrabianWebappGenerator.prototype.app = function () {
+  this.copy('Gemfile', 'Gemfile')
 
   this.template('_index.html', 'public/index.html');
 
-  this.directory('client/app', 'client/app');
   this.directory('test', 'test');
+
+  this.directory('development', 'development');
 
 };
 
-TrabianWebappGenerator.prototype.styles = function () {
+TrabianWebappGenerator.prototype.clientFiles = function () {
 
-  this.copy('Gemfile', 'Gemfile')
-  this.directory('client/sass', 'client/sass');
+  if (this.bootstrap) {
+    this.directory('client_bootstrap', 'client');
+  } else {
+    this.directory('client', 'client');
+  }
+
+  this.directory('client_shared/app/models', 'client/app/models');
 
 };
 

@@ -4,6 +4,7 @@ window.Backbone = require 'backbone'
 Backbone.$ = require 'jquery'
 window._ = require 'underscore'
 
+require 'bootstrap'
 require 'stickit'
 
 # Instantiate application

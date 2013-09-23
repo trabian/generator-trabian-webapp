@@ -35,6 +35,7 @@ module.exports = (grunt) ->
               ]
               lrSnippetMiddleware
               connect.static path.resolve 'public'
+              connect.static path.resolve 'bower_components'
             ]
 
     # Watch the specified files and run the specified tasks when any of those
@@ -50,7 +51,11 @@ module.exports = (grunt) ->
       # expression below.
       browserify:
         files: ['client/app/**/*.{coffee,jade,js}']
-        tasks: ['coffeelint', 'browserify:app', 'karma:unit:run']
+        tasks: ['coffeelint:app', 'browserify:app', 'karma:unit:run']
+
+      browserifyDevelopment:
+        files: ['development/**/*.{coffee,jade,js}']
+        tasks: ['coffeelint:development', 'browserify:development']
 
       # Trigger livereload when any .html files are changed within 'public'.
       html:
@@ -75,7 +80,7 @@ module.exports = (grunt) ->
 
       karma:
         files: ['test/**/*.coffee']
-        tasks: ['karma:unit:run']
+        tasks: ['coffeelint:test', 'karma:unit:run']
 
     bower:
       install:
@@ -110,6 +115,9 @@ module.exports = (grunt) ->
         options:
           sassDir: 'client/sass/lib'
           cssDir: 'public/generated/css/lib'
+          <% if (bootstrap) { %>importPath: [
+            'bower_components/bootstrap-sass/lib'
+          ]<% } %>
 
     # Convert CommonJS source files to browser-ready .js files.
     browserify:
@@ -123,7 +131,10 @@ module.exports = (grunt) ->
           alias: [
             'bower_components/underscore/underscore.js:underscore'
             'bower_components/backbone/backbone.js:backbone'
+            'bower_components/backbone.stickit/backbone.stickit.js:stickit'
             'bower_components/jquery/jquery.js:jquery'
+            <% if (bootstrap) { %>'bower_components/bootstrap-sass/dist/js/bootstrap.js:bootstrap'
+            <% } %>'bower_components/uritemplates/bin/uritemplate.js:uritemplate'
           ]
 
       app:
@@ -131,7 +142,7 @@ module.exports = (grunt) ->
         dest: 'public/generated/js/app.js'
         options:
           debug: true
-          external: ['backbone', 'underscore', 'jquery']
+          external: ['backbone', 'underscore', 'jquery', <% if (bootstrap) { %>'bootstrap', <% } %>'stickit', 'uritemplate']
 
           # Chaplin needs the ability to reference modules within the app, so
           # it needs to be included in the same .js file as the app. For
@@ -169,7 +180,57 @@ module.exports = (grunt) ->
               # will be exposed as app/views/hello.
               dest = dest.replace /\/index\.(\w*)$/, '.$1'
               "app/#{dest}"
+          ,
+            cwd: 'bower_components/trabian-webapp-core/app'
+            src: ['**/*.{coffee,js,jade}']
+            dest: 'core'
+            rename: (src, dest) ->
 
+              # Rename index.coffee files so they can be referenced externally
+              # without the index.coffee. For example, app/views/hello/index
+              # will be exposed as app/views/hello.
+              dest = dest.replace /\/index\.(\w*)$/, '.$1'
+              "core/#{dest}"
+          ]
+
+      development:
+        src: ['development/index.coffee']
+        dest: 'public/generated/js/development.js'
+        options:
+          debug: true
+
+          extensions: [
+            '.js', '.coffee'
+          ]
+
+          transform: [
+            'coffeeify'
+          ]
+
+          external: ['underscore']
+
+          aliasMappings: [
+            cwd: 'development'
+            src: ['**/*.{coffee,js,jade}']
+            dest: 'dev'
+            rename: (src, dest) ->
+
+              # Rename index.coffee files so they can be referenced externally
+              # without the index.coffee. For example, app/views/hello/index
+              # will be exposed as app/views/hello.
+              dest = dest.replace /\/index\.(\w*)$/, '.$1'
+              "dev/#{dest}"
+          ,
+            cwd: 'bower_components/trabian-webapp-core/development'
+            src: ['**/*.{coffee,js,jade}']
+            dest: 'core/dev'
+            rename: (src, dest) ->
+
+              # Rename index.coffee files so they can be referenced externally
+              # without the index.coffee. For example, app/views/hello/index
+              # will be exposed as app/views/hello.
+              dest = dest.replace /\/index\.(\w*)$/, '.$1'
+              "core/dev/#{dest}"
           ]
 
     # Use the default config for browserify_navigation, which will store the
@@ -179,6 +240,15 @@ module.exports = (grunt) ->
 
     coffeelint:
       app: ['client/app/**/*.coffee']
+      development: ['development/**/*.coffee']
+      test:
+        files:
+          src: [
+            'test/**/*.coffee'
+          ]
+        options:
+          max_line_length:
+            level: 'ignore'
 
     # Open the web app within the default browser.
     open:
@@ -187,7 +257,7 @@ module.exports = (grunt) ->
 
     karma:
       options:
-        frameworks: ['mocha', 'chai', 'chai-jquery']
+        frameworks: ['mocha', 'chai', 'chai-jquery', 'sinon-chai']
         preprocessors:
           'test/**/*.coffee': ['coffee']
         reporters: ['spec', 'osx']
@@ -202,14 +272,10 @@ module.exports = (grunt) ->
           'public/generated/js/app.js'
           'test/**/*.coffee'
         ]
-        # plugins: [
-        #   'karma-mocha'
-        #   'karma-spec-reporter'
-        # ]
       unit:
         background: true
         singleRun: false
-      continuous:
+      single:
         singleRun: true
 
   # Run the server and watch for changes.
@@ -238,7 +304,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'test', [
     'build:js'
-    'karma:continuous'
+    'karma:single'
   ]
 
   grunt.registerTask 'test:watch', [
@@ -246,5 +312,5 @@ module.exports = (grunt) ->
     'watch'
   ]
 
-  # Run the 'build' task by default.
-  grunt.registerTask 'default', ['build']
+  # Run the 'server' task by default.
+  grunt.registerTask 'default', ['server']
