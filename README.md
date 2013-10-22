@@ -29,7 +29,15 @@ Now, let's generate the webapp itself. It's as easy as:
 $ yo trabian-webapp
 ```
 
-Now you're ready to go. 
+By default, the generated name will be that of the current directory. If you would like to change this, you can specify a different name for the webapp instance on the command line with the `-n` flag when generating. For example:
+
+```
+$ yo trabian-webapp -n "Trabian CMS"
+```
+
+The specified name will be hyphenated as needed (e.g., "trabian-cms") wherever a name or ID is needed within the instance.
+
+With that completed, you're ready to go. 
 
 ## Verifying
 
